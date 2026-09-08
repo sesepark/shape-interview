@@ -1,0 +1,5 @@
+# 실명·학번이 담긴 원본 명단. 절대 커밋하지 않습니다.
+tools/roster.json
+
+.DS_Store
+__pycache__/
