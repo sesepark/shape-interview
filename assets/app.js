@@ -11,8 +11,8 @@
   'use strict';
 
   var PLACE = '서울대학교 44-1동 401-1호';
+  var MAIL = 'snu.shape@gmail.com';
   var ARRIVE_EARLY = 10; // 분
-  var CAL_MINUTES = 30;  // 달력에 넣을 때만 쓰는 길이
 
   var DB = window.SHAPE_SCHEDULE;
   var form = document.getElementById('lookup');
@@ -21,6 +21,7 @@
   var errEl = document.getElementById('formError');
   var btn = document.getElementById('submitBtn');
   var out = document.getElementById('result');
+  var dialog = document.getElementById('contactDialog');
   var enc = new TextEncoder();
   var busy = false;
 
@@ -102,7 +103,11 @@
     return /[가-힣]/.test(v) && !/[A-Za-z]/.test(v) ? v.replace(/\s+/g, '') : v;
   }
 
-  var AGAIN = '<button type="button" class="button secondary" id="againBtn">다시 조회</button>';
+  var ACTIONS =
+    '<div class="result-actions">' +
+      '<button type="button" class="button secondary" id="contactBtn">문의하기</button>' +
+      '<button type="button" class="button secondary" id="againBtn">다시 조회</button>' +
+    '</div>';
 
   /** 입력칸을 감추고 그 자리에 결과를 놓습니다. */
   function show(html) {
@@ -112,8 +117,8 @@
     out.setAttribute('tabindex', '-1');
     out.focus({ preventScroll: true });      // 모바일 자판을 닫고 낭독기에 결과를 읽힙니다
     out.scrollIntoView({ block: 'nearest' }); // 세로가 아주 짧은 화면에 대한 보험
-    var again = document.getElementById('againBtn');
-    if (again) again.addEventListener('click', reset);
+    document.getElementById('againBtn').addEventListener('click', reset);
+    document.getElementById('contactBtn').addEventListener('click', openContact);
   }
 
   /** 다시 입력칸으로 돌아갑니다. */
@@ -141,20 +146,15 @@
       '<dl class="result-meta">' +
         '<div><dt>장소</dt><dd>' + PLACE + '</dd></div>' +
         '<div><dt>방식</dt><dd>다대다 면접</dd></div>' +
-      '</dl>' +
-      '<div class="result-actions">' +
-        '<button type="button" class="button secondary" id="icsBtn">달력에 저장</button>' + AGAIN +
-      '</div>'
+      '</dl>' + ACTIONS
     );
-    document.getElementById('icsBtn').addEventListener('click', function () { saveIcs(rec); });
   }
 
   function renderPending(name) {
     show(
       '<h2 class="result-title">' + esc(displayName(name)) + ' 님은 면접 시간을 조율 중입니다</h2>' +
       '<p class="result-body">주신 가능 시간으로는 일정이 잡히지 않아, 운영진이 따로 연락드릴 예정입니다. ' +
-      '지원서에 적어 주신 연락처를 확인해 주세요.</p>' +
-      '<div class="result-actions">' + AGAIN + '</div>'
+      '먼저 물어보실 것이 있으면 문의하기로 연락해 주세요.</p>' + ACTIONS
     );
   }
 
@@ -163,67 +163,56 @@
       '<h2 class="result-title">면접 대상자 명단에서 찾지 못했습니다</h2>' +
       '<p class="result-body">이름과 학번이 <b>지원서에 적으신 것과 한 글자라도 다르면</b> 찾지 못합니다. ' +
       '띄어쓰기와 학번의 하이픈은 무시하니, 이름의 글자와 학번 아홉 자리를 다시 확인해 주세요.</p>' +
-      '<p class="result-body">안내 메일을 받으셨는데도 조회되지 않으면 지원서에 적어 주신 연락처로 회신해 주세요.</p>' +
-      '<div class="result-actions">' + AGAIN + '</div>'
+      '<p class="result-body">안내 메일을 받으셨는데도 조회되지 않으면 문의하기로 연락해 주세요.</p>' + ACTIONS
     );
   }
 
-  /* ── 달력 파일 ─────────────────────────────────────────────────────── */
+  /* ── 문의 대화상자 ─────────────────────────────────────────────────── */
 
-  function utcStamp(dateStr, minutes) {
-    var p = dateStr.split('-');
-    var t = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2], Math.floor(minutes / 60) - 9, minutes % 60));
-    return t.getUTCFullYear() + pad(t.getUTCMonth() + 1) + pad(t.getUTCDate()) + 'T' +
-           pad(t.getUTCHours()) + pad(t.getUTCMinutes()) + '00Z';
+  var copyBtn = document.getElementById('copyMailBtn');
+  var copyTimer = null;
+
+  function openContact() {
+    if (dialog.showModal) dialog.showModal();
+    else dialog.setAttribute('open', '');   // <dialog> 를 모르는 오래된 브라우저
   }
 
-  /** RFC 5545 는 한 줄을 75 옥텟에서 접으라고 합니다. 한글은 한 자가 3 옥텟이라
-   *  글자 수로 세면 금방 넘칩니다. */
-  function fold(line) {
-    if (enc.encode(line).length <= 75) return line;
-    var parts = [], buf = '', size = 0, limit = 75;
-    for (var ch of line) {
-      var n = enc.encode(ch).length;
-      if (size + n > limit) { parts.push(buf); buf = ' '; size = 1; limit = 74; }
-      buf += ch; size += n;
+  function closeContact() {
+    if (dialog.close) dialog.close();
+    else dialog.removeAttribute('open');
+  }
+
+  document.getElementById('closeDialogBtn').addEventListener('click', closeContact);
+
+  // 상자 바깥(뒤 배경)을 누르면 닫습니다. 배경은 dialog 자신이 받습니다.
+  dialog.addEventListener('click', function (e) {
+    if (e.target === dialog) closeContact();
+  });
+
+  dialog.addEventListener('close', function () {
+    clearTimeout(copyTimer);
+    copyBtn.textContent = '주소 복사';
+  });
+
+  copyBtn.addEventListener('click', function () {
+    function done(msg) {
+      copyBtn.textContent = msg;
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(function () { copyBtn.textContent = '주소 복사'; }, 2000);
     }
-    parts.push(buf);
-    return parts.join('\r\n');
-  }
-
-  function saveIcs(rec) {
-    var body = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//SHAPE//interview//KO',
-      'CALSCALE:GREGORIAN',
-      'BEGIN:VEVENT',
-      // 지원자마다 다른 값이어야 해서 무작위로 만듭니다. 이름·학번은 쓰지 않습니다.
-      'UID:' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8) + '@snu-shape.com',
-      'DTSTAMP:' + utcStamp(rec.d, rec.t),
-      'DTSTART:' + utcStamp(rec.d, rec.t),
-      'DTEND:' + utcStamp(rec.d, rec.t + CAL_MINUTES),
-      'SUMMARY:SHAPE 2기 면접',
-      'LOCATION:' + PLACE,
-      'DESCRIPTION:시작 ' + ARRIVE_EARLY + '분 전까지 도착해 주세요.',
-      'BEGIN:VALARM',
-      'TRIGGER:-PT30M',
-      'ACTION:DISPLAY',
-      'DESCRIPTION:SHAPE 2기 면접',
-      'END:VALARM',
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ].map(fold).join('\r\n');
-
-    var url = URL.createObjectURL(new Blob([body], { type: 'text/calendar;charset=utf-8' }));
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'shape-interview.ics';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-  }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(MAIL).then(function () { done('복사했습니다'); },
+                                              function () { done('직접 복사해 주세요'); });
+    } else {
+      // 클립보드를 못 쓰는 환경에서는 주소를 선택해 두어 길게 눌러 복사하게 합니다.
+      var range = document.createRange();
+      range.selectNodeContents(document.querySelector('.contact-mail'));
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      done('길게 눌러 복사');
+    }
+  });
 
   /* ── 조회 ──────────────────────────────────────────────────────────── */
 

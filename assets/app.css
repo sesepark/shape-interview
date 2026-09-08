@@ -56,17 +56,14 @@
   line-height: var(--sh-font-leading-tight);
   letter-spacing: var(--sh-font-tracking-display);
 }
-.stage-lead {
-  margin: var(--sh-space-6) 0 0;
-  color: var(--sh-color-ink-500);
-  font-size: var(--sh-font-size-body-lg);
-  line-height: var(--sh-font-leading-normal);
-}
+
 
 /* ── 입력 ───────────────────────────────────────────────────────────── */
 
+/* 제목 아래 간격은 입력칸과 결과가 같아야 합니다 — 둘이 같은 자리를 씁니다. */
+.lookup-card, .result { margin-top: var(--sh-space-11); }
+
 .lookup-card {
-  margin-top: var(--sh-space-11);
   padding: var(--sh-space-11) var(--sh-space-11) var(--sh-space-10);
   display: grid;
   gap: var(--sh-space-8);
@@ -77,7 +74,6 @@
 }
 .lookup-card[hidden] { display: none; }
 .lookup-card .field input { height: 48px; }
-.lookup-foot { margin-top: calc(-1 * var(--sh-space-4)); text-align: center; }
 
 /* ── 결과 ───────────────────────────────────────────────────────────── */
 
@@ -170,7 +166,48 @@
   color: var(--sh-color-ink-400);
   font-size: var(--sh-font-size-small);
 }
-.page-footer a { color: var(--sh-color-brand-blue); font-weight: var(--sh-font-weight-heavy); }
+.footer-text { align-self: center; }
+.footer-links { display: flex; gap: var(--sh-space-3); }
+
+/* 이모지 대신 선 아이콘. 누를 것이라 좁은 화면에서도 40px 아래로 내리지 않습니다. */
+.icon-link {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  color: var(--sh-color-ink-400);
+  border: 1px solid var(--sh-color-line-base);
+  border-radius: var(--sh-radius-pill);
+  transition: color var(--sh-motion-duration-fast) var(--sh-motion-easing-standard),
+              border-color var(--sh-motion-duration-fast) var(--sh-motion-easing-standard),
+              background var(--sh-motion-duration-fast) var(--sh-motion-easing-standard);
+}
+.icon-link:hover {
+  color: var(--sh-color-brand-blue);
+  background: var(--sh-color-surface-blue);
+  border-color: var(--sh-color-brand-blue);
+}
+
+/* ── 문의 대화상자 ──────────────────────────────────────────────────── */
+
+/* .dialog 는 shape-kit.css 것을 그대로 씁니다. 680px 아래에서 아래쪽에 붙는
+   시트로 바뀌는 것까지 키트에 들어 있습니다. */
+.contact-body { margin: 0; color: var(--sh-color-ink-500); font-size: var(--sh-font-size-body-sm); line-height: var(--sh-font-leading-loose); }
+.contact-mail {
+  margin-top: var(--sh-space-9);
+  display: block;
+  padding: var(--sh-space-8);
+  color: var(--sh-color-brand-blue);
+  background: var(--sh-color-surface-blue);
+  border-radius: var(--sh-radius-md);
+  font-size: var(--sh-font-size-title-sm);
+  font-weight: var(--sh-font-weight-black);
+  letter-spacing: var(--sh-font-tracking-card);
+  text-align: center;
+  word-break: break-all;
+}
+.contact-actions { margin-top: var(--sh-space-10); display: flex; gap: var(--sh-space-5); }
+.contact-actions .button { flex: 1 1 0; }
 
 /* ── 좁은 화면 ──────────────────────────────────────────────────────── */
 
@@ -183,12 +220,12 @@
 }
 
 /* 세로가 짧은 화면(가로로 눕힌 휴대전화, 작은 노트북)에서는 큰 글자부터 줄입니다.
-   순서대로 제목 → 소개 → 여백 → 입력칸 높이를 깎습니다. */
+   순서대로 제목 → 여백 → 입력칸 높이를 깎습니다. */
 @media (max-height: 700px) {
   .stage { padding-block: var(--sh-space-6); }
   .stage-title { font-size: clamp(28px, 6vw, 38px); }
-  .stage-lead { margin-top: var(--sh-space-4); font-size: var(--sh-font-size-body-sm); }
-  .lookup-card { margin-top: var(--sh-space-9); gap: var(--sh-space-6); }
+  .lookup-card, .result { margin-top: var(--sh-space-9); }
+  .lookup-card { gap: var(--sh-space-6); }
   .result { padding: var(--sh-space-10); }
   .result-time { font-size: clamp(44px, 12vw, 62px); }
   .result-date { margin-top: var(--sh-space-7); }
@@ -199,7 +236,7 @@
 
 @media (max-height: 620px) {
   .intro { display: none; }
-  .lookup-card { margin-top: 0; }
+  .lookup-card, .result { margin-top: 0; }
 }
 
 /* 휴대전화를 가로로 눕힌 정도. 여기서는 남는 여백이 없어서 안내 문구까지 접습니다. */
@@ -208,7 +245,6 @@
   .stage { padding-block: var(--sh-space-5); }
   .lookup-card { padding: var(--sh-space-9); gap: var(--sh-space-5); }
   .lookup-card .field input { height: 42px; }
-  .lookup-foot { display: none; }
   .result { padding: var(--sh-space-9); }
   .result-date { margin-top: var(--sh-space-5); }
   .result-time { font-size: 40px; }
@@ -220,6 +256,8 @@
 
 @media (max-height: 400px) {
   .page-header { padding-block: var(--sh-space-3); }
+  .page-footer { padding-block: var(--sh-space-2); }
+  .footer-text { display: none; }
   .result { padding: var(--sh-space-8); }
   .result-date { margin-top: var(--sh-space-4); }
   .result-time { font-size: 32px; }
