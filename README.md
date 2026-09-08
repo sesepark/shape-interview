@@ -11,12 +11,12 @@ SHAPE 2기 부원 선발 면접 대상자 53명에게 개인별 시간을 알리
 
 <table>
 <tr>
-<td width="62%"><img src="docs/images/desktop.png" alt="데스크톱에서 조회한 결과 화면"></td>
-<td width="38%" align="center"><img src="docs/images/mobile.png" alt="모바일에서 조회한 결과 화면" width="240"></td>
+<td width="64%"><img src="docs/images/desktop.png" alt="데스크톱에서 이름과 학번을 입력하는 화면"></td>
+<td width="36%" align="center"><img src="docs/images/mobile.png" alt="모바일에서 조회한 결과 화면" width="235"></td>
 </tr>
 <tr>
-<td align="center"><sub><b>데스크톱</b> — 이름·학번을 넣으면 아래에 결과 카드가 붙음</sub></td>
-<td align="center"><sub><b>390px</b> — 같은 화면. 한 단으로 접힘</sub></td>
+<td align="center"><sub><b>1240×740</b> — 들어오면 보이는 화면. 스크롤 없음</sub></td>
+<td align="center"><sub><b>390×780</b> — 조회하면 입력칸 <b>자리를</b> 결과가 대신함</sub></td>
 </tr>
 </table>
 
@@ -97,10 +97,19 @@ tools/build_schedule.py     명단 → 키 표
   같아야 해서, 요일 글자를 빌드 시점에 계산해 표에 넣었음. 남은 날짜(`D-2`, `내일`)만
   브라우저에서 계산하는데, 이때도 사용자의 시간대를 한국 시각으로 되돌린 뒤 비교함.
 
+- **스크롤 없이 한 화면에서 끝냄** — 결과를 입력칸 **아래에** 붙이면 휴대전화에서는
+  자판이 올라온 채로 스크롤을 해야 시간이 보임. 그래서 결과가 입력칸 **자리를 대신하게**
+  했음(`form.hidden` ↔ `result.hidden`). 세로 배치는 `100svh` 기준이고, 가운데 정렬은
+  `align-items:center` 가 아니라 `margin:auto` 로 했음 — 내용이 화면보다 길어질 때
+  전자는 위쪽을 잘라 버리기 때문임. 세로가 짧아지는 순서대로 제목 → 소개 문단 →
+  여백 → 입력칸 높이를 깎는 분기(`700px`·`620px`·`480px`·`400px`)를 뒀음.
+  320×568 부터 1920×1080 까지 13가지 크기에서 **입력 화면과 결과 화면 모두 스크롤이
+  생기지 않는 것**을 확인했고, 휴대전화를 가로로 눕힌 740×360 에서만 20px 넘침.
+
 - **디자인은 새로 짓지 않고 키트를 그대로 씀** — 색·글자·모서리·그림자를 임의로 정하면
   같은 동아리의 다른 화면과 어긋남. `sesepark/shape-web-design` 의 `shape-kit.css` 를
   그대로 두고, 이 페이지에만 필요한 스타일만 `app.css` 에 `--sh-*` 토큰으로 덧붙였음.
-  360px·430px 폭에서 가로 넘침이 없는 것과 누를 것이 44px 이상인 것을 확인함.
+  가로 넘침이 없는 것과 누를 것이 44px 이상인 것을 함께 확인함.
 
 ## 실행
 

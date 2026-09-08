@@ -1,34 +1,35 @@
-/* 이 페이지에만 필요한 것. 색·크기·여백은 전부 shape-kit.css 의 --sh-* 토큰입니다. */
+/* 이 페이지에만 필요한 것. 색·크기·여백은 전부 shape-kit.css 의 --sh-* 토큰입니다.
+ *
+ * 한 화면 안에서 끝나야 하는 페이지입니다. 머리글·본문·꼬리글을 세로로 쌓고
+ * 본문이 남은 높이를 가져가며, 조회 결과는 입력칸 아래가 아니라 그 자리를
+ * 대신합니다. 그래서 결과를 보려고 스크롤할 일이 없습니다.
+ */
 
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: var(--sh-space-4);
-  z-index: 100;
-  padding: var(--sh-space-5) var(--sh-space-9);
-  color: #fff;
-  background: var(--sh-color-brand-blue);
-  border-radius: var(--sh-radius-pill);
-  font-weight: var(--sh-font-weight-heavy);
+.page {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  background-image: linear-gradient(var(--sh-color-overlay-grid) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--sh-color-overlay-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
-.skip-link:focus { left: var(--sh-space-4); }
 
 /* ── 머리글 ─────────────────────────────────────────────────────────── */
 
 .page-header {
-  padding: var(--sh-space-9) var(--sh-layout-gutter);
-  border-bottom: 1px solid var(--sh-color-line-faint);
-}
-.page-header-inner {
-  max-width: var(--sh-layout-content-max);
-  margin-inline: auto;
+  flex: none;
+  padding: var(--sh-space-7) var(--sh-space-11);
   display: flex;
   align-items: center;
   gap: var(--sh-space-5);
+  border-bottom: 1px solid var(--sh-color-line-faint);
+  background: rgba(255, 255, 255, .8);
 }
-.page-logo { width: 34px; height: 34px; }
+.page-logo { width: 28px; height: 28px; }
 .page-wordmark {
-  font-size: var(--sh-font-size-title-sm);
+  font-size: var(--sh-font-size-body-lg);
   font-weight: var(--sh-font-weight-black);
   letter-spacing: var(--sh-font-tracking-title);
 }
@@ -36,56 +37,67 @@
   padding-left: var(--sh-space-5);
   border-left: 1px solid var(--sh-color-line-base);
   color: var(--sh-color-ink-500);
-  font-size: var(--sh-font-size-body-sm);
+  font-size: var(--sh-font-size-small);
   font-weight: var(--sh-font-weight-heavy);
 }
 
-/* ── 조회 ───────────────────────────────────────────────────────────── */
+/* ── 본문 ───────────────────────────────────────────────────────────── */
 
-.lookup-section {
-  padding-block: var(--sh-space-16) var(--sh-space-17);
-  background-color: #fff;
-  background-image: linear-gradient(var(--sh-color-overlay-grid) 1px, transparent 1px),
-                    linear-gradient(90deg, var(--sh-color-overlay-grid) 1px, transparent 1px);
-  background-size: 24px 24px;
+/* 가운데 정렬은 align-items 가 아니라 margin:auto 로 합니다. 내용이 화면보다
+   길어질 때 align-items:center 는 위쪽을 잘라 버립니다. */
+.stage { flex: 1 1 auto; display: flex; padding: var(--sh-space-11) var(--sh-space-10); }
+.stage-in { margin: auto; width: 100%; max-width: 520px; }
+
+.intro { text-align: center; }
+.stage-title {
+  margin: var(--sh-space-3) 0 0;
+  font-size: clamp(34px, 8.5vw, 52px);
+  font-weight: var(--sh-font-weight-black);
+  line-height: var(--sh-font-leading-tight);
+  letter-spacing: var(--sh-font-tracking-display);
 }
-.lookup-wrap { max-width: 560px; }
-.lookup-title { margin-top: var(--sh-space-5); font-size: clamp(38px, 9vw, 62px); }
-.lookup-lead { margin-top: var(--sh-space-9); font-size: var(--sh-font-size-body-lg); line-height: var(--sh-font-leading-loose); }
-.lookup-lead b { color: var(--sh-color-ink-900); font-weight: var(--sh-font-weight-heavy); }
+.stage-lead {
+  margin: var(--sh-space-6) 0 0;
+  color: var(--sh-color-ink-500);
+  font-size: var(--sh-font-size-body-lg);
+  line-height: var(--sh-font-leading-normal);
+}
+
+/* ── 입력 ───────────────────────────────────────────────────────────── */
 
 .lookup-card {
-  margin-top: var(--sh-space-13);
-  padding: var(--sh-space-13);
+  margin-top: var(--sh-space-11);
+  padding: var(--sh-space-11) var(--sh-space-11) var(--sh-space-10);
   display: grid;
-  gap: var(--sh-space-10);
+  gap: var(--sh-space-8);
   background: #fff;
   border: 1px solid var(--sh-color-line-soft);
   border-radius: var(--sh-radius-xl);
   box-shadow: var(--sh-shadow-raise);
 }
+.lookup-card[hidden] { display: none; }
 .lookup-card .field input { height: 48px; }
-.lookup-card .button { margin-top: var(--sh-space-1); }
-.lookup-privacy { margin-top: calc(-1 * var(--sh-space-6)); text-align: center; }
+.lookup-foot { margin-top: calc(-1 * var(--sh-space-4)); text-align: center; }
 
 /* ── 결과 ───────────────────────────────────────────────────────────── */
 
-.result:empty { display: none; }
-.result { margin-top: var(--sh-space-11); }
-
-.result-card {
-  padding: var(--sh-space-13);
+.result[hidden] { display: none; }
+.result {
+  padding: var(--sh-space-11);
   background: #fff;
   border: 1px solid var(--sh-color-line-soft);
   border-radius: var(--sh-radius-xl);
   box-shadow: var(--sh-shadow-card);
 }
+.result:focus { outline: none; }
+.result:focus-visible { outline: 2px solid var(--sh-color-brand-blue); outline-offset: 3px; }
+
 .result-head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sh-space-5);
+  gap: var(--sh-space-4);
 }
 .result-name {
   margin: 0;
@@ -94,29 +106,32 @@
   letter-spacing: var(--sh-font-tracking-card);
 }
 .result-date {
-  margin: var(--sh-space-11) 0 0;
+  margin: var(--sh-space-9) 0 0;
   color: var(--sh-color-ink-500);
   font-size: var(--sh-font-size-body-lg);
   font-weight: var(--sh-font-weight-heavy);
 }
 .result-time {
-  margin: var(--sh-space-2) 0 0;
+  margin: var(--sh-space-1) 0 0;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sh-space-4);
   color: var(--sh-color-brand-blue);
-  font-size: clamp(56px, 17vw, 92px);
+  font-size: clamp(52px, 15vw, 78px);
   font-weight: var(--sh-font-weight-black);
   line-height: var(--sh-font-leading-tight);
   letter-spacing: var(--sh-font-tracking-hero);
   font-variant-numeric: tabular-nums;
 }
 .result-time .ampm {
-  margin-left: var(--sh-space-4);
   color: var(--sh-color-ink-400);
   font-size: var(--sh-font-size-title-sm);
   letter-spacing: var(--sh-font-tracking-card);
 }
 .result-arrive {
-  margin: var(--sh-space-8) 0 0;
-  padding: var(--sh-space-6) var(--sh-space-9);
+  margin: var(--sh-space-7) 0 0;
+  padding: var(--sh-space-5) var(--sh-space-8);
   color: var(--sh-color-status-info-fg);
   background: var(--sh-color-status-info-bg);
   border-radius: var(--sh-radius-md);
@@ -125,70 +140,91 @@
 }
 .result-arrive b { font-weight: var(--sh-font-weight-black); }
 
-.result-meta {
-  margin: var(--sh-space-10) 0 0;
-  display: grid;
-  gap: var(--sh-space-5);
-}
-.result-meta > div {
-  display: grid;
-  grid-template-columns: 72px 1fr;
-  gap: var(--sh-space-5);
-  align-items: baseline;
-}
+.result-meta { margin: var(--sh-space-8) 0 0; display: grid; gap: var(--sh-space-4); }
+.result-meta > div { display: grid; grid-template-columns: 56px 1fr; gap: var(--sh-space-5); align-items: baseline; }
 .result-meta dt { color: var(--sh-color-ink-400); font-size: var(--sh-font-size-small); font-weight: var(--sh-font-weight-heavy); }
-.result-meta dd { margin: 0; font-weight: var(--sh-font-weight-heavy); }
+.result-meta dd { margin: 0; font-size: var(--sh-font-size-body-sm); font-weight: var(--sh-font-weight-heavy); }
 
-.result-actions { margin-top: var(--sh-space-11); display: flex; flex-wrap: wrap; gap: var(--sh-space-5); }
-.result-actions .button { flex: 1 1 180px; }
-
-.result-panel {
-  padding: var(--sh-space-13);
-  background: #fff;
-  border: 1px solid var(--sh-color-line-soft);
-  border-radius: var(--sh-radius-xl);
-  box-shadow: var(--sh-shadow-raise);
-}
-.result-panel h2 {
+.result-title {
   margin: 0 0 var(--sh-space-6);
   font-size: var(--sh-font-size-title-sm);
   font-weight: var(--sh-font-weight-black);
   letter-spacing: var(--sh-font-tracking-card);
 }
-.result-panel p { margin: 0; color: var(--sh-color-ink-500); line-height: var(--sh-font-leading-loose); }
-.result-panel p + p { margin-top: var(--sh-space-6); }
+.result-body { margin: 0; color: var(--sh-color-ink-500); font-size: var(--sh-font-size-body-sm); line-height: var(--sh-font-leading-loose); }
+.result-body + .result-body { margin-top: var(--sh-space-5); }
 
-/* ── 안내 ───────────────────────────────────────────────────────────── */
-
-.guide-wrap { max-width: 1080px; }
-.guide-wrap .sh-heading { margin-top: var(--sh-space-4); }
-.guide-grid { margin-top: var(--sh-space-13); }
-.guide-note { margin-top: var(--sh-space-13); }
+.result-actions { margin-top: var(--sh-space-9); display: flex; gap: var(--sh-space-5); }
+.result-actions .button { flex: 1 1 0; padding-inline: var(--sh-space-6); white-space: nowrap; }
 
 /* ── 꼬리글 ─────────────────────────────────────────────────────────── */
 
-.footer-inner { display: grid; gap: var(--sh-space-3); }
-.footer-brand {
-  margin: 0;
-  color: #fff;
-  font-size: var(--sh-font-size-title);
-  font-weight: var(--sh-font-weight-black);
-  letter-spacing: var(--sh-font-tracking-title);
+.page-footer {
+  flex: none;
+  padding: var(--sh-space-6) var(--sh-space-11) calc(var(--sh-space-6) + env(safe-area-inset-bottom));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sh-space-3) var(--sh-space-8);
+  border-top: 1px solid var(--sh-color-line-faint);
+  color: var(--sh-color-ink-400);
+  font-size: var(--sh-font-size-small);
 }
-.footer-desc { margin: 0; }
+.page-footer a { color: var(--sh-color-brand-blue); font-weight: var(--sh-font-weight-heavy); }
 
 /* ── 좁은 화면 ──────────────────────────────────────────────────────── */
 
 @media (max-width: 680px) {
-  .page-header { padding: var(--sh-space-7) var(--sh-layout-gutter-mobile); }
-  .page-header-sub { padding-left: var(--sh-space-4); }
-  .lookup-section { padding-block: var(--sh-space-15) var(--sh-space-16); }
-  .lookup-card { padding: var(--sh-space-10); }
-  .result-card, .result-panel { padding: var(--sh-space-10); }
-  .result-meta > div { grid-template-columns: 60px 1fr; }
-  .result-actions .button { flex: 1 1 100%; }
+  .page-header { padding: var(--sh-space-6) var(--sh-layout-gutter-mobile); }
+  .stage { padding: var(--sh-space-10) var(--sh-layout-gutter-mobile); }
+  .lookup-card { padding: var(--sh-space-10) var(--sh-space-9); gap: var(--sh-space-7); }
+  .result { padding: var(--sh-space-10) var(--sh-space-9); }
+  .page-footer { padding-inline: var(--sh-layout-gutter-mobile); justify-content: center; }
 }
 
-@media (max-width: 430px) {
-  .page-header-sub { display: none; }
+/* 세로가 짧은 화면(가로로 눕힌 휴대전화, 작은 노트북)에서는 큰 글자부터 줄입니다.
+   순서대로 제목 → 소개 → 여백 → 입력칸 높이를 깎습니다. */
+@media (max-height: 700px) {
+  .stage { padding-block: var(--sh-space-6); }
+  .stage-title { font-size: clamp(28px, 6vw, 38px); }
+  .stage-lead { margin-top: var(--sh-space-4); font-size: var(--sh-font-size-body-sm); }
+  .lookup-card { margin-top: var(--sh-space-9); gap: var(--sh-space-6); }
+  .result { padding: var(--sh-space-10); }
+  .result-time { font-size: clamp(44px, 12vw, 62px); }
+  .result-date { margin-top: var(--sh-space-7); }
+  .result-arrive { margin-top: var(--sh-space-6); padding-block: var(--sh-space-4); }
+  .result-meta { margin-top: var(--sh-space-6); }
+  .result-actions { margin-top: var(--sh-space-7); }
+}
+
+@media (max-height: 620px) {
+  .intro { display: none; }
+  .lookup-card { margin-top: 0; }
+}
+
+/* 휴대전화를 가로로 눕힌 정도. 여기서는 남는 여백이 없어서 안내 문구까지 접습니다. */
+@media (max-height: 480px) {
+  .page-header { padding-block: var(--sh-space-4); }
+  .stage { padding-block: var(--sh-space-5); }
+  .lookup-card { padding: var(--sh-space-9); gap: var(--sh-space-5); }
+  .lookup-card .field input { height: 42px; }
+  .lookup-foot { display: none; }
+  .result { padding: var(--sh-space-9); }
+  .result-date { margin-top: var(--sh-space-5); }
+  .result-time { font-size: 40px; }
+  .result-arrive { margin-top: var(--sh-space-5); }
+  .result-meta { margin-top: var(--sh-space-5); gap: var(--sh-space-2); }
+  .result-actions { margin-top: var(--sh-space-6); }
+  .page-footer { padding-block: var(--sh-space-3); font-size: var(--sh-font-size-caption); }
+}
+
+@media (max-height: 400px) {
+  .page-header { padding-block: var(--sh-space-3); }
+  .result { padding: var(--sh-space-8); }
+  .result-date { margin-top: var(--sh-space-4); }
+  .result-time { font-size: 32px; }
+  .result-time .ampm { font-size: var(--sh-font-size-body-sm); }
+  .result-arrive { margin-top: var(--sh-space-4); padding-block: var(--sh-space-3); }
+  .result-meta { margin-top: var(--sh-space-4); }
+  .result-actions { margin-top: var(--sh-space-5); }
 }
