@@ -171,7 +171,9 @@ window.SHAPE_SCHEDULE = {
    "w": "토"
   },
   "926bd019bda533a376fd976aba8608d3": {
-   "s": "pending"
+   "d": "2026-09-09",
+   "t": 1050,
+   "w": "수"
   },
   "94ae267ed21ea345f07eb94e3fbd4c83": {
    "d": "2026-09-11",
