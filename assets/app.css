@@ -223,6 +223,13 @@
   .page-footer { padding-inline: var(--sh-layout-gutter-mobile); justify-content: center; }
 }
 
+/* 노트북 세로 720px 대. '예상 시간' 줄이 늘면서 여기서 딱 몇 px 넘쳤습니다. */
+@media (max-height: 800px) {
+  .stage { padding-block: var(--sh-space-9); }
+  .result-date { margin-top: var(--sh-space-8); }
+  .result-actions { margin-top: var(--sh-space-8); }
+}
+
 /* 세로가 짧은 화면(가로로 눕힌 휴대전화, 작은 노트북)에서는 큰 글자부터 줄입니다.
    순서대로 제목 → 여백 → 입력칸 높이를 깎습니다. */
 @media (max-height: 700px) {
@@ -262,11 +269,11 @@
   .page-header { padding-block: var(--sh-space-3); }
   .page-footer { padding-block: var(--sh-space-2); }
   .footer-text { display: none; }
-  .result { padding: var(--sh-space-8); }
+  .result { padding: var(--sh-space-7); }
   .result-date { margin-top: var(--sh-space-4); }
-  .result-time { font-size: 32px; }
+  .result-time { font-size: 30px; }
   .result-time .ampm { font-size: var(--sh-font-size-body-sm); }
-  .result-arrive { margin-top: var(--sh-space-4); padding-block: var(--sh-space-3); }
-  .result-meta { margin-top: var(--sh-space-4); }
+  .result-arrive { margin-top: var(--sh-space-3); padding-block: var(--sh-space-2); }
+  .result-meta { margin-top: var(--sh-space-4); gap: var(--sh-space-1); }
   .result-actions { margin-top: var(--sh-space-5); }
 }
