@@ -73,7 +73,10 @@
   box-shadow: var(--sh-shadow-raise);
 }
 .lookup-card[hidden] { display: none; }
-.lookup-card .field input { height: 48px; }
+/* 16px 아래로 내리면 사파리(iOS)가 입력칸에 초점이 갈 때 화면을 확대해 버립니다.
+   viewport 에 maximum-scale 을 걸어 막는 방법도 있지만 그러면 손가락으로 확대하는
+   것까지 막혀서, 글자 크기 쪽을 올립니다. */
+.lookup-card .field input { height: 48px; font-size: 16px; }
 
 /* ── 결과 ───────────────────────────────────────────────────────────── */
 
@@ -137,8 +140,8 @@
 .result-arrive b { font-weight: var(--sh-font-weight-black); }
 
 .result-meta { margin: var(--sh-space-8) 0 0; display: grid; gap: var(--sh-space-4); }
-.result-meta > div { display: grid; grid-template-columns: 56px 1fr; gap: var(--sh-space-5); align-items: baseline; }
-.result-meta dt { color: var(--sh-color-ink-400); font-size: var(--sh-font-size-small); font-weight: var(--sh-font-weight-heavy); }
+.result-meta > div { display: grid; grid-template-columns: 72px 1fr; gap: var(--sh-space-5); align-items: baseline; }
+.result-meta dt { color: var(--sh-color-ink-400); font-size: var(--sh-font-size-small); font-weight: var(--sh-font-weight-heavy); white-space: nowrap; }
 .result-meta dd { margin: 0; font-size: var(--sh-font-size-body-sm); font-weight: var(--sh-font-weight-heavy); }
 
 .result-title {
@@ -216,6 +219,7 @@
   .stage { padding: var(--sh-space-10) var(--sh-layout-gutter-mobile); }
   .lookup-card { padding: var(--sh-space-10) var(--sh-space-9); gap: var(--sh-space-7); }
   .result { padding: var(--sh-space-10) var(--sh-space-9); }
+  .result-meta > div { grid-template-columns: 68px 1fr; gap: var(--sh-space-4); }
   .page-footer { padding-inline: var(--sh-layout-gutter-mobile); justify-content: center; }
 }
 
@@ -227,11 +231,11 @@
   .lookup-card, .result { margin-top: var(--sh-space-9); }
   .lookup-card { gap: var(--sh-space-6); }
   .result { padding: var(--sh-space-10); }
-  .result-time { font-size: clamp(44px, 12vw, 62px); }
+  .result-time { font-size: clamp(40px, 11vw, 56px); }
   .result-date { margin-top: var(--sh-space-7); }
-  .result-arrive { margin-top: var(--sh-space-6); padding-block: var(--sh-space-4); }
-  .result-meta { margin-top: var(--sh-space-6); }
-  .result-actions { margin-top: var(--sh-space-7); }
+  .result-arrive { margin-top: var(--sh-space-5); padding-block: var(--sh-space-3); }
+  .result-meta { margin-top: var(--sh-space-5); gap: var(--sh-space-3); }
+  .result-actions { margin-top: var(--sh-space-6); }
 }
 
 @media (max-height: 620px) {

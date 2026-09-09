@@ -101,6 +101,11 @@
     return rec.p || (DB.places && DB.places[rec.d]) || DB.place || '';
   }
 
+  /** 소요 시간도 그 사람만 다르면 기록의 m 이 이깁니다. */
+  function minutesOf(rec) {
+    return rec.m || DB.minutes || 0;
+  }
+
   /** 한글 이름은 "구 진 모" 처럼 띄어 써도 붙여서 보여 줍니다. */
   function displayName(raw) {
     var v = raw.trim().replace(/\s+/g, ' ');
@@ -149,6 +154,7 @@
       '<p class="result-arrive"><b>' + hhmm(rec.t - ARRIVE_EARLY) + '</b>까지 면접 장소에 도착해 주세요.</p>' +
       '<dl class="result-meta">' +
         '<div><dt>장소</dt><dd>' + esc(placeOf(rec)) + '</dd></div>' +
+        '<div><dt>예상 시간</dt><dd>약 ' + minutesOf(rec) + '분</dd></div>' +
         '<div><dt>방식</dt><dd>다대다 면접</dd></div>' +
       '</dl>' + ACTIONS
     );

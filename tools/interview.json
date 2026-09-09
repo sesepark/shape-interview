@@ -1,0 +1,11 @@
+{
+ "_주석": "면접 진행 조건. 장소가 날짜마다 다르면 place.byDate 에 넣고 나머지는 place.default 를 씁니다. 한 사람만 다르면 tools/roster.json 의 그 사람 항목에 place / duration 을 넣으면 이 표보다 우선합니다.",
+ "durationMinutes": 15,
+ "place": {
+  "default": "서울대학교 44-1동 401-1호",
+  "byDate": {
+   "2026-09-09": "서울대학교 301동 109호",
+   "2026-09-12": "서울대학교 관정도서관 G207호"
+  }
+ }
+}

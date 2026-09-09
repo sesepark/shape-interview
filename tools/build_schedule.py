@@ -20,7 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ROSTER = ROOT / "tools" / "roster.json"
-PLACES = ROOT / "tools" / "places.json"
+CONFIG = ROOT / "tools" / "interview.json"
 OUT = ROOT / "assets" / "schedule.js"
 
 ITERATIONS = 300_000  # 브라우저 한 번 조회 ≈ 0.1초. 대입 공격은 그만큼 비싸진다
@@ -68,9 +68,11 @@ def main() -> int:
     roster = json.loads(ROSTER.read_text(encoding="utf-8"))
     salt = read_salt()
 
-    places = json.loads(PLACES.read_text(encoding="utf-8")) if PLACES.exists() else {}
-    default_place = places.get("default", "")
-    by_date = places.get("byDate", {})
+    conf = json.loads(CONFIG.read_text(encoding="utf-8")) if CONFIG.exists() else {}
+    place_conf = conf.get("place", {})
+    default_place = place_conf.get("default", "")
+    by_date = place_conf.get("byDate", {})
+    default_minutes = int(conf.get("durationMinutes", 0))
 
     people: dict[str, dict] = {}
     used_places: dict[str, str] = {}
@@ -93,12 +95,14 @@ def main() -> int:
             record = {"d": row["date"], "t": int(row["start"])}
             # 요일은 파일을 만들 때 확정한다 — 브라우저 시계를 믿지 않는다.
             record["w"] = "월화수목금토일"[date(y, m, d).weekday()]
-            # 장소는 날짜별로 정하고, 한 사람만 다르면 그 사람 항목이 이긴다.
+            # 장소·소요 시간은 표에서 정하고, 한 사람만 다르면 그 사람 항목이 이긴다.
             place = row.get("place") or by_date.get(row["date"], default_place)
             if row.get("place"):
                 record["p"] = place
             else:
                 used_places[row["date"]] = place
+            if row.get("duration") and int(row["duration"]) != default_minutes:
+                record["m"] = int(row["duration"])
 
         # 이름만으로도, 학번만으로도 맞출 수 없게 둘을 한 번에 넣어 키를 만든다.
         # 학번만의 해시를 따로 실으면 학번 전체(약 80만 가지)를 훑어 명단에 든
@@ -118,12 +122,13 @@ def main() -> int:
         "bytes": KEY_BYTES,
         "place": default_place,
         "places": dict(sorted(used_places.items())),
+        "minutes": default_minutes,
         "people": ordered,
     }
     body = json.dumps(payload, ensure_ascii=False, indent=1)
     OUT.write_text(
         "/* 자동 생성 파일입니다. 고치지 마세요.\n"
-        " * 원천: tools/roster.json (저장소에 올리지 않습니다) + tools/places.json\n"
+        " * 원천: tools/roster.json (저장소에 올리지 않습니다) + tools/interview.json\n"
         " * 다시 만들기: python3 tools/build_schedule.py\n"
         " */\n"
         f"window.SHAPE_SCHEDULE = {body};\n",
@@ -138,6 +143,8 @@ def main() -> int:
     for r in ordered.values():
         if "p" in r:
             print(f"  {r['d']}  {r['p']}  (개인 지정)")
+    others = sorted({r["m"] for r in ordered.values() if "m" in r})
+    print(f"  면접 시간 {default_minutes}분" + (f" · 개인 지정 {others}" if others else " (전원 동일)"))
     return 0
 
 

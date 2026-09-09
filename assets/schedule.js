@@ -1,5 +1,5 @@
 /* 자동 생성 파일입니다. 고치지 마세요.
- * 원천: tools/roster.json (저장소에 올리지 않습니다) + tools/places.json
+ * 원천: tools/roster.json (저장소에 올리지 않습니다) + tools/interview.json
  * 다시 만들기: python3 tools/build_schedule.py
  */
 window.SHAPE_SCHEDULE = {
@@ -13,6 +13,7 @@ window.SHAPE_SCHEDULE = {
   "2026-09-11": "서울대학교 44-1동 401-1호",
   "2026-09-12": "서울대학교 관정도서관 G207호"
  },
+ "minutes": 15,
  "people": {
   "076d35efd94cccf8cf0c84f21a8ba897": {
    "d": "2026-09-10",
