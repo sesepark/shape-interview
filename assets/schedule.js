@@ -1,11 +1,18 @@
 /* 자동 생성 파일입니다. 고치지 마세요.
- * 원천: tools/roster.json (저장소에 올리지 않습니다)
+ * 원천: tools/roster.json (저장소에 올리지 않습니다) + tools/places.json
  * 다시 만들기: python3 tools/build_schedule.py
  */
 window.SHAPE_SCHEDULE = {
  "salt": "e2947cd8769e625c94c06e2d073f75f2",
  "iterations": 300000,
  "bytes": 16,
+ "place": "서울대학교 44-1동 401-1호",
+ "places": {
+  "2026-09-09": "서울대학교 301동 109호",
+  "2026-09-10": "서울대학교 44-1동 401-1호",
+  "2026-09-11": "서울대학교 44-1동 401-1호",
+  "2026-09-12": "서울대학교 관정도서관 G207호"
+ },
  "people": {
   "076d35efd94cccf8cf0c84f21a8ba897": {
    "d": "2026-09-10",
@@ -172,7 +179,7 @@ window.SHAPE_SCHEDULE = {
   },
   "926bd019bda533a376fd976aba8608d3": {
    "d": "2026-09-09",
-   "t": 1050,
+   "t": 1060,
    "w": "수"
   },
   "94ae267ed21ea345f07eb94e3fbd4c83": {

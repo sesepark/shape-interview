@@ -10,7 +10,6 @@
 (function () {
   'use strict';
 
-  var PLACE = '서울대학교 44-1동 401-1호';
   var MAIL = 'snu.shape@gmail.com';
   var ARRIVE_EARLY = 10; // 분
 
@@ -97,6 +96,11 @@
     });
   }
 
+  /** 장소는 날짜마다 다릅니다. 그 사람만 다른 곳이면 기록의 p 가 이깁니다. */
+  function placeOf(rec) {
+    return rec.p || (DB.places && DB.places[rec.d]) || DB.place || '';
+  }
+
   /** 한글 이름은 "구 진 모" 처럼 띄어 써도 붙여서 보여 줍니다. */
   function displayName(raw) {
     var v = raw.trim().replace(/\s+/g, ' ');
@@ -144,7 +148,7 @@
       '<p class="result-time">' + hhmm(rec.t) + '<span class="ampm">' + korTime(rec.t) + '</span></p>' +
       '<p class="result-arrive"><b>' + hhmm(rec.t - ARRIVE_EARLY) + '</b>까지 면접 장소에 도착해 주세요.</p>' +
       '<dl class="result-meta">' +
-        '<div><dt>장소</dt><dd>' + PLACE + '</dd></div>' +
+        '<div><dt>장소</dt><dd>' + esc(placeOf(rec)) + '</dd></div>' +
         '<div><dt>방식</dt><dd>다대다 면접</dd></div>' +
       '</dl>' + ACTIONS
     );
