@@ -150,8 +150,43 @@
   font-weight: var(--sh-font-weight-black);
   letter-spacing: var(--sh-font-tracking-card);
 }
+.outcome-title { margin-top: var(--sh-space-8); }
 .result-body { margin: 0; color: var(--sh-color-ink-500); font-size: var(--sh-font-size-body-sm); line-height: var(--sh-font-leading-loose); }
 .result-body + .result-body { margin-top: var(--sh-space-5); }
+
+.result-callout {
+  margin-top: var(--sh-space-8);
+  padding: var(--sh-space-7) var(--sh-space-8);
+  display: grid;
+  gap: var(--sh-space-2);
+  color: var(--sh-color-status-info-fg);
+  background: var(--sh-color-status-info-bg);
+  border-radius: var(--sh-radius-md);
+}
+.result-callout .callout-label {
+  font-size: var(--sh-font-size-micro);
+  font-weight: var(--sh-font-weight-black);
+  letter-spacing: .08em;
+}
+.result-callout strong {
+  color: var(--sh-color-brand-blue);
+  font-size: var(--sh-font-size-title-sm);
+  font-weight: var(--sh-font-weight-black);
+}
+.result-callout > span:not(.callout-label) {
+  font-size: var(--sh-font-size-body-sm);
+  font-weight: var(--sh-font-weight-heavy);
+}
+.result-callout p { margin: var(--sh-space-2) 0 0; font-size: var(--sh-font-size-small); }
+.result-notice {
+  margin: var(--sh-space-6) 0 0;
+  padding: var(--sh-space-5) var(--sh-space-6);
+  color: var(--sh-color-ink-600);
+  background: var(--sh-color-surface-subtle);
+  border-radius: var(--sh-radius-sm);
+  font-size: var(--sh-font-size-small);
+  line-height: var(--sh-font-leading-normal);
+}
 
 .result-actions { margin-top: var(--sh-space-9); display: flex; gap: var(--sh-space-5); }
 .result-actions .button { flex: 1 1 0; padding-inline: var(--sh-space-6); white-space: nowrap; }
@@ -223,6 +258,15 @@
   .page-footer { padding-inline: var(--sh-layout-gutter-mobile); justify-content: center; }
 }
 
+@media (max-width: 430px) {
+  .page-header { padding-inline: var(--sh-space-7); }
+  .page-header-sub { margin-left: auto; padding-left: 0; border-left: 0; }
+  .stage { padding-inline: var(--sh-space-6); }
+  .stage-title { font-size: clamp(32px, 10vw, 42px); }
+  .lookup-card, .result { padding-inline: var(--sh-space-7); }
+  .result-callout { padding: var(--sh-space-6); }
+}
+
 /* 노트북 세로 720px 대. '예상 시간' 줄이 늘면서 여기서 딱 몇 px 넘쳤습니다. */
 @media (max-height: 800px) {
   .stage { padding-block: var(--sh-space-9); }
@@ -243,6 +287,9 @@
   .result-arrive { margin-top: var(--sh-space-5); padding-block: var(--sh-space-3); }
   .result-meta { margin-top: var(--sh-space-5); gap: var(--sh-space-3); }
   .result-actions { margin-top: var(--sh-space-6); }
+  .outcome-title { margin-top: var(--sh-space-6); margin-bottom: var(--sh-space-4); }
+  .result-callout { margin-top: var(--sh-space-5); padding-block: var(--sh-space-5); }
+  .result-notice { margin-top: var(--sh-space-4); padding-block: var(--sh-space-4); }
 }
 
 @media (max-height: 620px) {

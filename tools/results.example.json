@@ -1,0 +1,17 @@
+[
+ {
+  "name": "홍길동",
+  "sid": "2025-12345",
+  "result": "junior_pass"
+ },
+ {
+  "name": "김서연",
+  "sid": "2024-54321",
+  "result": "regular_pass"
+ },
+ {
+  "name": "이민준",
+  "sid": "2023-11111",
+  "result": "rejected"
+ }
+]

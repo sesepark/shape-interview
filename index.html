@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SHAPE 2기 면접 시간 확인</title>
-<meta name="description" content="SHAPE 2기 부원 선발 면접 대상자가 이름과 학번으로 본인의 면접 시작 시간을 확인하는 페이지입니다.">
+<title>SHAPE 2기 선발 결과 확인</title>
+<meta name="description" content="SHAPE 2기 지원자가 이름과 학번으로 본인의 선발 결과를 확인하는 페이지입니다.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
-<meta property="og:title" content="SHAPE 2기 면접 시간 확인">
-<meta property="og:description" content="이름과 학번을 입력하시면 본인의 면접 시작 시간을 알려 드립니다.">
+<meta property="og:title" content="SHAPE 2기 선발 결과 확인">
+<meta property="og:description" content="이름과 학번을 입력하여 본인의 선발 결과를 확인해 주세요.">
 <link rel="icon" href="assets/shape-symbol.png">
 <link rel="apple-touch-icon" href="assets/shape-symbol.png">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="assets/shape-kit.css">
-<link rel="stylesheet" href="assets/app.css">
+<link rel="stylesheet" href="assets/app.css?v=20260913-results">
 </head>
 <body>
 <div class="page">
@@ -23,15 +23,15 @@
   <header class="page-header">
     <img class="page-logo" src="assets/shape-symbol.png" alt="SHAPE" width="28" height="28">
     <span class="page-wordmark">SHAPE</span>
-    <span class="page-header-sub">2기 부원 선발 면접</span>
+    <span class="page-header-sub">2기 부원 선발 결과</span>
   </header>
 
   <main class="stage">
     <div class="stage-in">
 
       <div id="intro" class="intro">
-        <p class="sh-eyebrow">INTERVIEW</p>
-        <h1 class="stage-title">면접 시간 확인</h1>
+        <p class="sh-eyebrow">RECRUITMENT</p>
+        <h1 class="stage-title">선발 결과 확인</h1>
       </div>
 
       <form id="lookup" class="lookup-card" novalidate>
@@ -47,7 +47,7 @@
                  placeholder="2025-12345" maxlength="20" required>
         </div>
         <p class="form-note error" id="formError" role="alert" hidden></p>
-        <button class="button block" id="submitBtn" type="submit">면접 시간 보기</button>
+        <button class="button block" id="submitBtn" type="submit">결과 확인</button>
       </form>
 
       <div id="result" class="result" hidden></div>
@@ -57,8 +57,7 @@
 
   <dialog id="contactDialog" class="dialog contact-dialog">
     <h2>문의하기</h2>
-    <p class="contact-body">면접 일정에 관해 궁금한 점이 있거나 시간을 조정하셔야 하면
-      아래 주소로 연락해 주세요.</p>
+    <p class="contact-body">선발 결과에 관해 문의하실 내용이 있으면 아래 주소로 연락해 주세요.</p>
     <a class="contact-mail" href="mailto:snu.shape@gmail.com">snu.shape@gmail.com</a>
     <div class="contact-actions">
       <button type="button" class="button secondary" id="copyMailBtn">주소 복사</button>
@@ -92,7 +91,7 @@
 
 </div>
 
-<script src="assets/schedule.js"></script>
-<script src="assets/app.js"></script>
+<script src="assets/results.js?v=20260913-results"></script>
+<script src="assets/app.js?v=20260913-results"></script>
 </body>
 </html>
